@@ -5,8 +5,8 @@ function Homepage() {
     <>
       <h1>Welcome to the Homepage.</h1>
       <p>Sign up and login stuff here.</p>
-      <Button variant="light">Sign Up</Button>
-      <Button variant="dark">Login</Button>
+      <Button variant="primary">Sign Up</Button>
+      <Button variant="secondary">Login</Button>
     </>
   );
 }

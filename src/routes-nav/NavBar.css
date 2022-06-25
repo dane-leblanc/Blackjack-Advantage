@@ -1,1 +1,12 @@
+.navbar-nav a {
+  padding-left: 1em;
+}
 
+.nav-link {
+  margin-left: auto;
+}
+
+.active {
+  color: antiquewhite;
+  font-weight: bold;
+}
