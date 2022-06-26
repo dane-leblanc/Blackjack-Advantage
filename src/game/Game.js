@@ -11,6 +11,13 @@ export default function Game() {
   useEffect(() => {
     getNewDeck();
   }, []);
+
+  useEffect(() => {
+    if (deckId !== "") {
+      dealCards();
+    }
+  }, [deckId]);
+
   async function getNewDeck() {
     let res = await CardsApi.getNewDeckId();
     setDeckId(res);
@@ -28,13 +35,22 @@ export default function Game() {
   }
 
   if (deckId === "") return <h1>Shuffling Deck...</h1>;
-  //   if (dealerHand.length === 0) return <h1>Dealing Cards...</h1>;
+  if (dealerHand.length === 0 || userHand.length === 0)
+    return <h1>Dealing Cards...</h1>;
 
   return (
     <>
       <h1>Game</h1>
       <p>This will be where all of the fun will happen.</p>
       <Button onClick={() => dealCards()}>Deal</Button>
+      <div>
+        <img src={dealerHand[0].image} alt="dealer" />
+        <img src={dealerHand[1].image} alt="dealer" />
+      </div>
+      <div>
+        <img src={userHand[0].image} alt="user" />
+        <img src={userHand[1].image} alt="user" />
+      </div>
     </>
   );
 }
