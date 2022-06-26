@@ -1,0 +1,20 @@
+.dealer-hand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.user-hand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.user-buttons {
+  display: flex;
+  justify-content: space-around;
+}
