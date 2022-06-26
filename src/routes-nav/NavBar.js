@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import { NavLink } from "react-router-dom";
 import "./NavBar.css";
 
-function NavBar() {
+export default function NavBar() {
   return (
     <Navbar
       collapseOnSelect
@@ -36,5 +36,3 @@ function NavBar() {
     </Navbar>
   );
 }
-
-export default NavBar;

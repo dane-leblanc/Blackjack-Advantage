@@ -4,7 +4,7 @@ import NavBar from "./routes-nav/NavBar";
 import "./App.css";
 import Components from "./routes-nav/Components";
 
-function App() {
+export default function App() {
   console.log("App.js");
   return (
     <BrowserRouter>
@@ -15,5 +15,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;
