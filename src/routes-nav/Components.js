@@ -5,7 +5,6 @@ import Game from "../game/Game";
 import BasicStrat from "../basicstrat/BasicStrat";
 
 export default function Components() {
-  console.log("Components.js");
   return (
     <div>
       <Routes>

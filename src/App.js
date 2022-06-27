@@ -5,7 +5,6 @@ import "./App.css";
 import Components from "./routes-nav/Components";
 
 export default function App() {
-  console.log("App.js");
   return (
     <BrowserRouter>
       <div className="App">

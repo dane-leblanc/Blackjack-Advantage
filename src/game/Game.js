@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import CardsApi from "../api/CardsApi";
-import CardFront from "../PlayingCard/CardFront";
-import CardBack from "../PlayingCard/CardBack";
+import UserHand from "./hands/UserHand";
+import DealerHand from "./hands/DealerHand";
 import "./Game.css";
 
 export default function Game() {
@@ -13,7 +12,7 @@ export default function Game() {
   const [dealerScore, setDealerScore] = useState(0);
   const [userHand, setUserHand] = useState([]);
   const [userScore, setUserScore] = useState(0);
-  const [dealerAction, toggleDealerAction] = useState(false);
+  const [dealerAction, setDealerAction] = useState(false);
   const [cardCount, setCardCount] = useState(0);
 
   useEffect(() => {
@@ -21,6 +20,7 @@ export default function Game() {
   }, []);
 
   useEffect(() => {
+    // once deck is retrieved, assign cards to dealer/user
     if (deckId !== "") {
       dealCards();
     }
@@ -34,6 +34,7 @@ export default function Game() {
     let res = await CardsApi.drawCards(deckId, count);
     return res;
   }
+
   async function dealCards() {
     let res = await getCards(1);
     setDealerHand(res.cards);
@@ -42,42 +43,41 @@ export default function Game() {
     setCardsRemain(res.remaining);
   }
 
-  async function userHit() {
-    let res = await getCards(1);
-    setUserHand(userHand.concat(res.cards));
-    setCardsRemain(res.remaining);
+  if (deckId === "" || dealerHand.length === 0 || userHand.length === 0) {
+    return (
+      <>
+        <h1 className="mt-4">Dealing...</h1>
+        <Spinner className="mt-4" animation="border"></Spinner>;
+      </>
+    );
   }
-
-  if (deckId === "") return <h1>Shuffling Deck...</h1>;
-  if (dealerHand.length === 0 || userHand.length === 0)
-    return <h1>Dealing Cards...</h1>;
 
   return (
     <>
       <h1>Game</h1>
       <p>This will be where all of the fun will happen.</p>
-
-      <div className="dealer-hand">
-        {dealerHand.map((card) => (
-          <CardFront key={uuidv4()} imgSrc={card.image} />
-        ))}
-        {dealerAction ? (
-          <CardFront imgSrc={dealerHand[1].image} />
-        ) : (
-          <CardBack />
-        )}
-      </div>
+      <DealerHand
+        dealerHand={dealerHand}
+        setDealerHand={setDealerHand}
+        setDealerScore={setDealerScore}
+        getCards={getCards}
+        setCardsRemain={setCardsRemain}
+        dealerAction={dealerAction}
+      />
       <div className="user-buttons">
-        <Button onClick={() => userHit()}>Hit</Button>
-        <Button variant="danger">Stand</Button>
-        <Button variant="success">Double</Button>
-        <Button variant="warning">Split</Button>
+        <span>User Score: {userScore}</span>
+        <span>Dealer Score: {dealerScore}</span>
       </div>
-      <div className="user-hand">
-        {userHand.map((card) => (
-          <CardFront key={uuidv4()} imgSrc={card.image} />
-        ))}
-      </div>
+      <UserHand
+        userHand={userHand}
+        setUserHand={setUserHand}
+        userScore={userScore}
+        setUserScore={setUserScore}
+        getCards={getCards}
+        setCardsRemain={setCardsRemain}
+        dealerAction={dealerAction}
+        setDealerAction={setDealerAction}
+      />
     </>
   );
 }
