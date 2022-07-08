@@ -11,14 +11,30 @@ export default function DealerHand({
   getCards,
   setCardsRemain,
   dealerAction,
+  setHandComplete,
+  userScore,
+  handComplete
 }) {
   useEffect(() => {
-    setDealerScore(getScore(dealerHand));
+    let score = getScore(dealerHand);
+    setDealerScore(score);
+    if (dealerAction && score < 17 && !handComplete) {
+      setTimeout(() => {
+        dealerHit();
+      }, 1000);
+    } else if (dealerAction && score >= 17) {
+      setHandComplete(true);
+    }
   }, [dealerHand]);
 
   useEffect(() => {
     if (dealerAction) {
-      dealerHit();
+      setTimeout(() => {
+        dealerHit();
+      }, 1000);
+    }
+    if (userScore > 21) {
+      setHandComplete(true);
     }
   }, [dealerAction]);
 

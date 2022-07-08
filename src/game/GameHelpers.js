@@ -1,3 +1,5 @@
+import CardsApi from "../api/CardsApi";
+
 export function getScore(hand) {
   let score = 0;
   let softScore = false;
@@ -20,4 +22,9 @@ export function getScore(hand) {
     softScore = false;
   }
   return score;
+}
+
+export async function getCards(count, deckId) {
+  let res = await CardsApi.drawCards(deckId, count);
+  return res;
 }
