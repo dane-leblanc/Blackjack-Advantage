@@ -1,29 +1,39 @@
 import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import CardFront from "../../PlayingCard/CardFront";
 import CardBack from "../../PlayingCard/CardBack";
 import { v4 as uuidv4 } from "uuid";
-import { getScore } from "../GameHelpers";
-
-export default function DealerHand({
-  dealerHand,
+import { getScore, getCards } from "../gameHelpers";
+import { selectUserScore } from "./userHandSlice";
+import {
   setDealerHand,
   setDealerScore,
-  getCards,
-  setCardsRemain,
-  dealerAction,
+  selectDealerHand,
+  selectDealerAction,
+} from "./dealerHandSlice";
+import {
   setHandComplete,
-  userScore,
-  handComplete
-}) {
+  selectHandComplete,
+  setCardsRemain,
+  selectDeckId,
+} from "../gameSlice";
+
+export default function DealerHand() {
+  const userScore = useSelector(selectUserScore);
+  const dealerAction = useSelector(selectDealerAction);
+  const dealerHand = useSelector(selectDealerHand);
+  const handComplete = useSelector(selectHandComplete);
+  const deckId = useSelector(selectDeckId);
+  const dispatch = useDispatch();
   useEffect(() => {
     let score = getScore(dealerHand);
-    setDealerScore(score);
+    dispatch(setDealerScore(score));
     if (dealerAction && score < 17 && !handComplete) {
       setTimeout(() => {
         dealerHit();
-      }, 1000);
+      }, 700);
     } else if (dealerAction && score >= 17) {
-      setHandComplete(true);
+      dispatch(setHandComplete(true));
     }
   }, [dealerHand]);
 
@@ -31,17 +41,17 @@ export default function DealerHand({
     if (dealerAction) {
       setTimeout(() => {
         dealerHit();
-      }, 1000);
+      }, 300);
     }
     if (userScore > 21) {
-      setHandComplete(true);
+      dispatch(setHandComplete(true));
     }
   }, [dealerAction]);
 
   async function dealerHit() {
-    let res = await getCards(1);
-    setDealerHand(dealerHand.concat(res.cards));
-    setCardsRemain(res.remaining);
+    let res = await getCards(1, deckId);
+    dispatch(setDealerHand(dealerHand.concat(res.cards)));
+    dispatch(setCardsRemain(res.remaining));
   }
 
   return (

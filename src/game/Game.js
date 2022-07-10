@@ -1,23 +1,56 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { v4 as uuidv4 } from "uuid";
+import {
+  setDeckId,
+  setCardsRemain,
+  setHandComplete,
+  setCardCount,
+  selectDeckId,
+  selectHandComplete,
+} from "./gameSlice";
+import {
+  setDealerHand,
+  setDealerScore,
+  setDealerAction,
+  selectDealerHand,
+  selectDealerScore,
+  selectDealerAction,
+} from "./hands/dealerHandSlice";
+import {
+  setUserHand,
+  setUserScore,
+  selectUserScore,
+  selectUserHand,
+} from "./hands/userHandSlice";
+import DealerHand from "./hands/DealerHand";
+import UserHand from "./hands/UserHand";
 import CardsApi from "../api/CardsApi";
 import CardFront from "../PlayingCard/CardFront";
-import CardBack from "../PlayingCard/CardBack";
-import { getScore, getCards } from "./GameHelpers";
+import { getScore, getCards } from "./gameHelpers";
 import "./Game.css";
 
 export default function Game() {
-  const [deckId, setDeckId] = useState("");
+  // const [deckId, setDeckId] = useState("");
   const [cardsRemain, setCardsRemain] = useState(312);
-  const [dealerHand, setDealerHand] = useState([]);
-  const [dealerScore, setDealerScore] = useState(0);
-  const [userHand, setUserHand] = useState([]);
-  const [userScore, setUserScore] = useState(0);
-  const [dealerAction, setDealerAction] = useState(false);
-  const [handComplete, setHandComplete] = useState(false);
+  // const [dealerHand, setDealerHand] = useState([]);
+  // const [dealerScore, setDealerScore] = useState(0);
+  // const [userHand, setUserHand] = useState([]);
+  // const [userScore, setUserScore] = useState(0);
+  // const [dealerAction, setDealerAction] = useState(false);
+  // const [handComplete, setHandComplete] = useState(false);
   const [cardCount, setCardCount] = useState(0);
+
+  const dealerScore = useSelector(selectDealerScore);
+  const dealerHand = useSelector(selectDealerHand);
+  const dealerAction = useSelector(selectDealerAction);
+  const userHand = useSelector(selectUserHand);
+  const userScore = useSelector(selectUserScore);
+  const deckId = useSelector(selectDeckId);
+  const handComplete = useSelector(selectHandComplete);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getNewDeck();
@@ -31,137 +64,139 @@ export default function Game() {
   }, [deckId]);
 
   useEffect(() => {
+    // dispatch(setUserScore(getScore(userHand)));
     setUserScore(getScore(userHand));
   }, [userHand]);
 
   useEffect(() => {
     if (userScore >= 21) {
-      setDealerAction(true);
+      dispatch(setDealerAction(true));
       setHandComplete(true);
     }
   }, [userScore]);
 
   async function getNewDeck() {
     let res = await CardsApi.getNewDeckId();
-    setDeckId(res);
+    dispatch(setDeckId(res));
   }
 
   async function dealCards() {
     let res = await getCards(1, deckId);
-    setDealerHand(res.cards);
+    dispatch(setDealerHand(res.cards));
     res = await getCards(2, deckId);
-    setUserHand(res.cards);
+    dispatch(setUserHand(res.cards));
     setCardsRemain(res.remaining);
-    setDealerAction(false);
-    setHandComplete(false);
+    dispatch(setDealerAction(false));
+    dispatch(setHandComplete(false));
   }
 
-  useEffect(() => {
-    let score = getScore(dealerHand);
-    setDealerScore(score);
-    if (dealerAction && score < 17 && !handComplete) {
-      setTimeout(() => {
-        dealerHit();
-      }, 1000);
-    } else if (dealerAction && score >= 17) {
-      setHandComplete(true);
-    }
-  }, [dealerHand]);
+  // useEffect(() => {
+  //   let score = getScore(dealerHand);
+  //   setDealerScore(score);
+  //   if (dealerAction && score < 17 && !handComplete) {
+  //     setTimeout(() => {
+  //       dealerHit();
+  //     }, 1000);
+  //   } else if (dealerAction && score >= 17) {
+  //     setHandComplete(true);
+  //   }
+  // }, [dealerHand]);
 
-  useEffect(() => {
-    if (dealerAction) {
-      setTimeout(() => {
-        dealerHit();
-      }, 1000);
-    }
-    if (userScore > 21) {
-      setHandComplete(true);
-    }
-  }, [dealerAction]);
+  // useEffect(() => {
+  //   if (dealerAction) {
+  //     setTimeout(() => {
+  //       dealerHit();
+  //     }, 1000);
+  //   }
+  //   if (userScore > 21) {
+  //     setHandComplete(true);
+  //   }
+  // }, [dealerAction]);
 
-  async function dealerHit() {
-    let res = await getCards(1, deckId);
-    setDealerHand(dealerHand.concat(res.cards));
-    setCardsRemain(res.remaining);
-  }
+  // async function dealerHit() {
+  //   let res = await getCards(1, deckId);
+  //   setDealerHand(dealerHand.concat(res.cards));
+  //   setCardsRemain(res.remaining);
+  // }
 
-  async function userHit() {
-    let res = await getCards(1, deckId);
-    setUserHand(userHand.concat(res.cards));
-    setCardsRemain(res.remaining);
-  }
+  // async function userHit() {
+  //   let res = await getCards(1, deckId);
+  //   setUserHand(userHand.concat(res.cards));
+  //   setCardsRemain(res.remaining);
+  // }
 
-  async function double() {
-    let res = await getCards(1, deckId);
-    setUserHand(userHand.concat(res.cards));
-    setCardsRemain(res.remaining);
-    setDealerAction(true);
-  }
+  // async function double() {
+  //   let res = await getCards(1, deckId);
+  //   setUserHand(userHand.concat(res.cards));
+  //   setCardsRemain(res.remaining);
+  //   dispatch(setDealerAction(true));
+  // }
 
-  function stand() {
-    setDealerAction(true);
-  }
+  // function stand() {
+  //   // setDealerAction(true);
+  //   dispatch(setDealerAction(true));
+  // }
 
-  let result;
+  // let result;
 
-  if (handComplete) {
-    if (userScore > 21) {
-      result = "Bust";
-    } else if (userScore === 21 && userHand.length === 2) {
-      result = "Blackjack";
-    } else if (userScore <= 21 && dealerScore > 21) {
-      result = "You Win";
-    } else if (userScore <= 21 && userScore > dealerScore) {
-      result = "You Win";
-    } else if (userScore <= 21 && userScore === dealerScore) {
-      result = "Push";
-    } else if (userScore < 21 && userScore < dealerScore) {
-      result = "Dealer Wins";
-    }
-  }
+  // if (handComplete) {
+  //   if (userScore > 21) {
+  //     result = "Bust";
+  //   } else if (userScore === 21 && userHand.length === 2) {
+  //     result = "Blackjack";
+  //   } else if (userScore <= 21 && dealerScore > 21) {
+  //     result = "You Win";
+  //   } else if (userScore <= 21 && userScore > dealerScore) {
+  //     result = "You Win";
+  //   } else if (userScore <= 21 && userScore === dealerScore) {
+  //     result = "Push";
+  //   } else if (userScore < 21 && userScore < dealerScore) {
+  //     result = "Dealer Wins";
+  //   }
+  // }
 
-  let buttonArea;
+  // let buttonArea;
 
-  handComplete
-    ? (buttonArea = (
-        <h2>
-          {result}{" "}
-          <Button variant="primary" onClick={() => dealCards()}>
-            Next Hand
-          </Button>
-        </h2>
-      ))
-    : (buttonArea = (
-        <div className="user-buttons">
-          <Button
-            onClick={() => userHit()}
-            disabled={dealerAction ? true : false}
-          >
-            Hit
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => stand()}
-            disabled={dealerAction ? true : false}
-          >
-            Stand
-          </Button>
-          <Button
-            variant="success"
-            onClick={() => double()}
-            disabled={
-              dealerAction || userHand.length !== 2 || userScore > 11
-                ? true
-                : false
-            }
-          >
-            Double
-          </Button>
-          <Button variant="warning" disabled={dealerAction ? true : false}>
-            Split
-          </Button>
-        </div>
-      ));
+  // handComplete
+  //   ? (buttonArea = (
+  //       <h2>
+  //         {result}{" "}
+  //         <Button variant="primary" onClick={() => dealCards()}>
+  //           Next Hand
+  //         </Button>
+  //       </h2>
+  //     ))
+  //   : (buttonArea = (
+  //       <div className="user-buttons">
+  //         <Button
+  //           onClick={() => userHit()}
+  //           disabled={dealerAction ? true : false}
+  //         >
+  //           Hit
+  //         </Button>
+  //         <Button
+  //           variant="danger"
+  //           onClick={() => stand()}
+  //           disabled={dealerAction ? true : false}
+  //         >
+  //           Stand
+  //         </Button>
+  //         <Button
+  //           variant="success"
+  //           onClick={() => double()}
+  //           disabled={
+  //             dealerAction || userHand.length !== 2 || userScore > 11
+  //               ? true
+  //               : false
+  //           }
+  //         >
+  //           Double
+  //         </Button>
+  //         <Button variant="warning" disabled={dealerAction ? true : false}>
+  //           Split
+  //         </Button>
+  //       </div>
+  //     ));
 
   if (deckId === "" || dealerHand.length === 0 || userHand.length === 0) {
     return (
@@ -176,22 +211,8 @@ export default function Game() {
     <>
       <h1>Game - {cardsRemain} Cards Remaining</h1>
       <p>This will be where all of the fun will happen.</p>
-      <div className="dealer-hand">
-        {dealerHand.map((card) => (
-          <CardFront key={uuidv4()} imgSrc={card.image} />
-        ))}
-        {!dealerAction && <CardBack />}
-      </div>
-      <div className="user-buttons">
-        <span>User Score: {userScore}</span>
-        <span>Dealer Score: {dealerScore}</span>
-      </div>
-      {buttonArea}
-      <div className="user-hand">
-        {userHand.map((card) => (
-          <CardFront key={uuidv4()} imgSrc={card.image} />
-        ))}
-      </div>
+      <DealerHand />
+      <UserHand />
     </>
   );
 }

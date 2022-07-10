@@ -6,11 +6,11 @@ import Components from "./routes-nav/Components";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
-        <NavBar />
-        <Components />
-      </div>
-    </BrowserRouter>
+      <BrowserRouter>
+        <div className="App">
+          <NavBar />
+          <Components />
+        </div>
+      </BrowserRouter>
   );
 }

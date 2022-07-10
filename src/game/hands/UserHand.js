@@ -1,49 +1,70 @@
 import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import CardFront from "../../PlayingCard/CardFront";
 import { v4 as uuidv4 } from "uuid";
 import Button from "react-bootstrap/Button";
-import { getScore } from "../GameHelpers";
-
-export default function UserHand({
-  userHand,
+import Game from "../Game";
+import { getScore, getCards } from "../gameHelpers";
+import {
   setUserHand,
-  userScore,
   setUserScore,
-  getCards,
-  setCardsRemain,
-  dealerAction,
+  selectUserScore,
+  selectUserHand,
+} from "./userHandSlice";
+import {
   setDealerAction,
-  handComplete,
-  dealerScore,
-  dealCards,
+  setDealerHand,
+  selectDealerScore,
+  selectDealerAction,
+} from "./dealerHandSlice";
+import {
   setHandComplete,
-}) {
+  setCardsRemain,
+  selectDeckId,
+  selectHandComplete,
+} from "../gameSlice";
+
+export default function UserHand() {
+  const userScore = useSelector(selectUserScore);
+  const userHand = useSelector(selectUserHand);
+  const deckId = useSelector(selectDeckId);
+  const handComplete = useSelector(selectHandComplete);
+  const dealerScore = useSelector(selectDealerScore);
+  const dealerAction = useSelector(selectDealerAction);
+  const dispatch = useDispatch();
   useEffect(() => {
-    setUserScore(getScore(userHand));
+    dispatch(setUserScore(getScore(userHand)));
   }, [userHand]);
 
   useEffect(() => {
     if (userScore >= 21) {
-      setDealerAction(true);
-      setHandComplete(true);
+      dispatch(setDealerAction(true));
+      dispatch(setHandComplete(true));
     }
   }, [userScore]);
-
   async function userHit() {
-    let res = await getCards(1);
-    setUserHand(userHand.concat(res.cards));
-    setCardsRemain(res.remaining);
+    let res = await getCards(1, deckId);
+    dispatch(setUserHand(userHand.concat(res.cards)));
+    dispatch(setCardsRemain(res.remaining));
   }
-
   async function double() {
-    let res = await getCards(1);
-    setUserHand(userHand.concat(res.cards));
-    setCardsRemain(res.remaining);
-    setDealerAction(true);
+    let res = await getCards(1, deckId);
+    dispatch(setUserHand(userHand.concat(res.cards)));
+    dispatch(setCardsRemain(res.remaining));
+    dispatch(setDealerAction(true));
+  }
+  function stand() {
+    dispatch(setDealerAction(true));
   }
 
-  function stand() {
-    setDealerAction(true);
+  async function dealCards() {
+    let res = await getCards(1, deckId);
+    dispatch(setDealerHand(res.cards));
+    res = await getCards(2, deckId);
+    dispatch(setUserHand(res.cards));
+    setCardsRemain(res.remaining);
+    dispatch(setDealerAction(false));
+    dispatch(setHandComplete(false));
   }
 
   let result;
