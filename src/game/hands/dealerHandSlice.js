@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getCards } from "../gameHelpers";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   dealerHand: [],

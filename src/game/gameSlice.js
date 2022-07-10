@@ -45,5 +45,7 @@ export const {
 
 export const selectHandComplete = (state) => state.game.handComplete;
 export const selectDeckId = (state) => state.game.deckId;
+export const selectCardsRemain = (state) => state.game.cardsRemain;
+export const selectCardCount = (state) => state.game.cardCount;
 
 export default gameSlice.reducer;

@@ -1,5 +1,4 @@
 import CardsApi from "../api/CardsApi";
-
 export function getScore(hand) {
   let score = 0;
   let softScore = false;

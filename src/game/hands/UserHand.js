@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import CardFront from "../../PlayingCard/CardFront";
 import { v4 as uuidv4 } from "uuid";
 import Button from "react-bootstrap/Button";
-import Game from "../Game";
 import { getScore, getCards } from "../gameHelpers";
 import {
   setUserHand,
@@ -13,7 +12,6 @@ import {
 } from "./userHandSlice";
 import {
   setDealerAction,
-  setDealerHand,
   selectDealerScore,
   selectDealerAction,
 } from "./dealerHandSlice";
@@ -24,7 +22,7 @@ import {
   selectHandComplete,
 } from "../gameSlice";
 
-export default function UserHand() {
+export default function UserHand({ dealCards }) {
   const userScore = useSelector(selectUserScore);
   const userHand = useSelector(selectUserHand);
   const deckId = useSelector(selectDeckId);
@@ -55,16 +53,6 @@ export default function UserHand() {
   }
   function stand() {
     dispatch(setDealerAction(true));
-  }
-
-  async function dealCards() {
-    let res = await getCards(1, deckId);
-    dispatch(setDealerHand(res.cards));
-    res = await getCards(2, deckId);
-    dispatch(setUserHand(res.cards));
-    setCardsRemain(res.remaining);
-    dispatch(setDealerAction(false));
-    dispatch(setHandComplete(false));
   }
 
   let result;
