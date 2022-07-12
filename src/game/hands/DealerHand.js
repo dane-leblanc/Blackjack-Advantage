@@ -13,10 +13,13 @@ import {
 } from "./dealerHandSlice";
 import {
   setHandComplete,
+  setRunningCount,
   selectHandComplete,
   setCardsRemain,
   selectDeckId,
+  selectRunningCount,
 } from "../gameSlice";
+import { runningCountChange } from "../gameHelpers";
 
 export default function DealerHand() {
   const userScore = useSelector(selectUserScore);
@@ -24,6 +27,7 @@ export default function DealerHand() {
   const dealerHand = useSelector(selectDealerHand);
   const handComplete = useSelector(selectHandComplete);
   const deckId = useSelector(selectDeckId);
+  const runningCount = useSelector(selectRunningCount);
   const dispatch = useDispatch();
   useEffect(() => {
     let score = getScore(dealerHand);
@@ -43,7 +47,7 @@ export default function DealerHand() {
         dealerHit();
       }, 300);
     }
-    if (userScore > 21) {
+    if (userScore > 21 && dealerAction) {
       dispatch(setHandComplete(true));
     }
   }, [dealerAction]);
@@ -52,6 +56,7 @@ export default function DealerHand() {
     let res = await getCards(1, deckId);
     dispatch(setDealerHand(dealerHand.concat(res.cards)));
     dispatch(setCardsRemain(res.remaining));
+    dispatch(setRunningCount(runningCountChange(runningCount, res.cards)));
   }
 
   return (

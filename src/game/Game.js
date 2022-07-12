@@ -5,10 +5,11 @@ import {
   setDeckId,
   setCardsRemain,
   setHandComplete,
-  setCardCount,
+  setRunningCount,
   selectDeckId,
-  selectCardCount,
+  selectRunningCount,
   selectCardsRemain,
+  selectHandComplete,
 } from "./gameSlice";
 import {
   setDealerHand,
@@ -24,7 +25,7 @@ import {
 import DealerHand from "./hands/DealerHand";
 import UserHand from "./hands/UserHand";
 import CardsApi from "../api/CardsApi";
-import { getCards } from "./gameHelpers";
+import { getCards, runningCountChange } from "./gameHelpers";
 import "./Game.css";
 
 export default function Game() {
@@ -34,6 +35,8 @@ export default function Game() {
   const userScore = useSelector(selectUserScore);
   const deckId = useSelector(selectDeckId);
   const cardsRemain = useSelector(selectCardsRemain);
+  const handComplete = useSelector(selectHandComplete);
+  const runningCount = useSelector(selectRunningCount);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -47,19 +50,30 @@ export default function Game() {
     }
   }, [deckId]);
 
+  useEffect(() => {
+    if (cardsRemain < 50 && handComplete) {
+      getNewDeck();
+    }
+  }, [handComplete]);
+
   async function getNewDeck() {
     let res = await CardsApi.getNewDeckId();
     dispatch(setDeckId(res));
   }
 
   async function dealCards() {
-    let res = await getCards(1, deckId);
-    dispatch(setDealerHand(res.cards));
-    res = await getCards(2, deckId);
-    dispatch(setUserHand(res.cards));
-    dispatch(setCardsRemain(res.remaining));
     dispatch(setDealerAction(false));
     dispatch(setHandComplete(false));
+    let dealerRes = await getCards(1, deckId);
+    dispatch(setDealerHand(dealerRes.cards));
+    let userRes = await getCards(2, deckId);
+    dispatch(setUserHand(userRes.cards));
+    dispatch(setCardsRemain(userRes.remaining));
+    dispatch(
+      setRunningCount(
+        runningCountChange(runningCount, userRes.cards.concat(dealerRes.cards))
+      )
+    );
   }
 
   if (deckId === "" || dealerHand.length === 0 || userHand.length === 0) {
@@ -76,6 +90,9 @@ export default function Game() {
       <h1>Game - {cardsRemain} Cards Remaining</h1>
       <p>This will be where all of the fun will happen.</p>
       <DealerHand />
+      <div className="user-buttons">
+        <span>Running Count: {runningCount}</span>
+      </div>
       <div className="user-buttons">
         <span>Player Score: {userScore} </span>
         <span>Dealer Score: {dealerScore} </span>

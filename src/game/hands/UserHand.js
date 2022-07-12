@@ -18,9 +18,12 @@ import {
 import {
   setHandComplete,
   setCardsRemain,
+  setRunningCount,
   selectDeckId,
   selectHandComplete,
+  selectRunningCount,
 } from "../gameSlice";
+import { runningCountChange } from "../gameHelpers";
 
 export default function UserHand({ dealCards }) {
   const userScore = useSelector(selectUserScore);
@@ -29,6 +32,7 @@ export default function UserHand({ dealCards }) {
   const handComplete = useSelector(selectHandComplete);
   const dealerScore = useSelector(selectDealerScore);
   const dealerAction = useSelector(selectDealerAction);
+  const runningCount = useSelector(selectRunningCount);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setUserScore(getScore(userHand)));
@@ -44,12 +48,14 @@ export default function UserHand({ dealCards }) {
     let res = await getCards(1, deckId);
     dispatch(setUserHand(userHand.concat(res.cards)));
     dispatch(setCardsRemain(res.remaining));
+    dispatch(setRunningCount(runningCountChange(runningCount, res.cards)));
   }
   async function double() {
     let res = await getCards(1, deckId);
     dispatch(setUserHand(userHand.concat(res.cards)));
     dispatch(setCardsRemain(res.remaining));
     dispatch(setDealerAction(true));
+    dispatch(setRunningCount(runningCountChange(runningCount, res.cards)));
   }
   function stand() {
     dispatch(setDealerAction(true));
@@ -100,7 +106,8 @@ export default function UserHand({ dealCards }) {
             Stand
           </Button>
           <Button
-            variant="success"
+            variant="secondary
+            "
             onClick={() => double()}
             disabled={
               dealerAction || userHand.length !== 2 || userScore > 11
@@ -110,7 +117,7 @@ export default function UserHand({ dealCards }) {
           >
             Double
           </Button>
-          <Button
+          {/* <Button
             variant="warning"
             disabled={
               dealerAction || userHand[0].value !== userHand[1].value
@@ -119,7 +126,7 @@ export default function UserHand({ dealCards }) {
             }
           >
             Split
-          </Button>
+          </Button> */}
         </div>
       ));
 

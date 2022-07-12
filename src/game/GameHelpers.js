@@ -27,3 +27,16 @@ export async function getCards(count, deckId) {
   let res = await CardsApi.drawCards(deckId, count);
   return res;
 }
+
+export function runningCountChange(count, cards) {
+  cards.forEach((card) => {
+    if (+card.value < 7) {
+      count--;
+      console.log("decrement: " + count);
+    } else if (+card.value <= 9 && +card.value >= 7) {
+    } else {
+      count++;
+    }
+  });
+  return count;
+}

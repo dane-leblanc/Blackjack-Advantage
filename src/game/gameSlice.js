@@ -6,7 +6,8 @@ const initialState = {
   userHand: [],
   userScore: 0,
   handComplete: false,
-  cardCount: 0,
+  runningCount: 0,
+  trueCount: 0,
 };
 
 export const gameSlice = createSlice({
@@ -28,8 +29,8 @@ export const gameSlice = createSlice({
     setHandComplete: (state, action) => {
       state.handComplete = action.payload;
     },
-    setCardCount: (state, action) => {
-      state.cardCount = action.payload;
+    setRunningCount: (state, action) => {
+      state.runningCount = action.payload;
     },
   },
 });
@@ -40,12 +41,12 @@ export const {
   setUserHand,
   setUserScore,
   setHandComplete,
-  setCardCount,
+  setRunningCount,
 } = gameSlice.actions;
 
 export const selectHandComplete = (state) => state.game.handComplete;
 export const selectDeckId = (state) => state.game.deckId;
 export const selectCardsRemain = (state) => state.game.cardsRemain;
-export const selectCardCount = (state) => state.game.cardCount;
+export const selectRunningCount = (state) => state.game.runningCount;
 
 export default gameSlice.reducer;
