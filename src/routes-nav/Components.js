@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "../homepage/Homepage";
-import AboutPage from "../about/About";
-import Game from "../game/Game";
-import BasicStrat from "../basicstrat/BasicStrat";
+import HomePage from "../Homepage/Homepage";
+import AboutPage from "../About/About";
+import Game from "../Game/Game";
+import BasicStrat from "../BasicStrat/BasicStrat";
 
 export default function Components() {
   return (

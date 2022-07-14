@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import CardFront from "../../PlayingCard/CardFront";
-import CardBack from "../../PlayingCard/CardBack";
+import CardFront from "../PlayingCard/CardFront";
+import CardBack from "../PlayingCard/CardBack";
 import { v4 as uuidv4 } from "uuid";
-import { getScore, getCards } from "../gameHelpers";
-import { selectUserScore } from "./userHandSlice";
+import { getScore, getCards } from "../helpers/helpers";
+import { selectUserScore } from "../UserHand/userHandSlice";
 import {
   setDealerHand,
   setDealerScore,
@@ -18,8 +18,9 @@ import {
   setCardsRemain,
   selectDeckId,
   selectRunningCount,
-} from "../gameSlice";
-import { runningCountChange } from "../gameHelpers";
+} from "../Game/gameSlice";
+import { runningCountChange } from "../helpers/helpers";
+import "./DealerHand.css";
 
 export default function DealerHand() {
   const userScore = useSelector(selectUserScore);

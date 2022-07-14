@@ -9,7 +9,7 @@ export default class CardsApi {
       const response = await axios.get(url);
       return response.data;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -18,8 +18,8 @@ export default class CardsApi {
     return res.deck_id;
   }
 
-  static async drawCards(deckId, count) {
-    let res = await this.request(`${deckId}/draw/?count=${count}`);
+  static async drawCards(deckId, numCards) {
+    let res = await this.request(`${deckId}/draw/?count=${numCards}`);
     return res;
   }
 }

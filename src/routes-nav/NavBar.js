@@ -1,8 +1,8 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import { NavLink } from "react-router-dom";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
+import logo from "./ba-logo.png";
 import "./NavBar.css";
 
 export default function NavBar() {
@@ -16,7 +16,9 @@ export default function NavBar() {
     >
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand>Home</Navbar.Brand>
+          <Navbar.Brand>
+            <img src={logo} alt="logo" className="navbar-logo"/>
+          </Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

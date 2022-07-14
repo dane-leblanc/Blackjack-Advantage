@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import gameReducer from "./game/gameSlice";
-import dealerHandReducer from "./game/hands/dealerHandSlice";
-import userHandReducer from "./game/hands/userHandSlice";
+import gameReducer from "./Game/gameSlice";
+import dealerHandReducer from "./DealerHand/dealerHandSlice";
+import userHandReducer from "./UserHand/userHandSlice";
 
 export const store = configureStore({
   reducer: {

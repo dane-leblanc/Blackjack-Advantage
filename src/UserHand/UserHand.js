@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import CardFront from "../../PlayingCard/CardFront";
+import CardFront from "../PlayingCard/CardFront";
 import { v4 as uuidv4 } from "uuid";
 import Button from "react-bootstrap/Button";
-import { getScore, getCards } from "../gameHelpers";
+import { getScore, getCards } from "../helpers/helpers";
 import {
   setUserHand,
   setUserScore,
@@ -14,7 +14,7 @@ import {
   setDealerAction,
   selectDealerScore,
   selectDealerAction,
-} from "./dealerHandSlice";
+} from "../DealerHand/dealerHandSlice";
 import {
   setHandComplete,
   setCardsRemain,
@@ -22,8 +22,9 @@ import {
   selectDeckId,
   selectHandComplete,
   selectRunningCount,
-} from "../gameSlice";
-import { runningCountChange } from "../gameHelpers";
+} from "../Game/gameSlice";
+import { runningCountChange } from "../helpers/helpers";
+import "./UserHand.css";
 
 export default function UserHand({ dealCards }) {
   const userScore = useSelector(selectUserScore);
@@ -41,7 +42,9 @@ export default function UserHand({ dealCards }) {
   useEffect(() => {
     if (userScore >= 21) {
       dispatch(setDealerAction(true));
-      dispatch(setHandComplete(true));
+      if (userHand.length === 2) {
+        dispatch(setHandComplete(true));
+      }
     }
   }, [userScore]);
   async function userHit() {

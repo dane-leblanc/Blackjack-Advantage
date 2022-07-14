@@ -6,6 +6,10 @@
   margin-left: auto;
 }
 
+.navbar-logo {
+  height: 50px;
+  margin: -100% -100%;
+}
 .active {
   color: antiquewhite;
   font-weight: bold;

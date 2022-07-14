@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
+import Alert from "react-bootstrap/Alert";
 import {
   setDeckId,
   setCardsRemain,
@@ -15,24 +16,19 @@ import {
   setDealerHand,
   setDealerAction,
   selectDealerHand,
-  selectDealerScore,
-} from "./hands/dealerHandSlice";
-import {
-  setUserHand,
-  selectUserHand,
-  selectUserScore,
-} from "./hands/userHandSlice";
-import DealerHand from "./hands/DealerHand";
-import UserHand from "./hands/UserHand";
+} from "../DealerHand/dealerHandSlice";
+import { setUserHand, selectUserHand } from "../UserHand/userHandSlice";
+import DealerHand from "../DealerHand/DealerHand";
+import UserHand from "../UserHand/UserHand";
+import CountCanvas from "../CountCanvas/CountCanvas";
 import CardsApi from "../api/CardsApi";
-import { getCards, runningCountChange } from "./gameHelpers";
+import { getCards, runningCountChange } from "../helpers/helpers";
 import "./Game.css";
 
 export default function Game() {
+  const [show, setShow] = useState(false);
   const dealerHand = useSelector(selectDealerHand);
-  const dealerScore = useSelector(selectDealerScore);
   const userHand = useSelector(selectUserHand);
-  const userScore = useSelector(selectUserScore);
   const deckId = useSelector(selectDeckId);
   const cardsRemain = useSelector(selectCardsRemain);
   const handComplete = useSelector(selectHandComplete);
@@ -51,7 +47,8 @@ export default function Game() {
   }, [deckId]);
 
   useEffect(() => {
-    if (cardsRemain < 50 && handComplete) {
+    if (cardsRemain < 300 && handComplete) {
+      setShow(true);
       getNewDeck();
     }
   }, [handComplete]);
@@ -76,6 +73,22 @@ export default function Game() {
     );
   }
 
+  let newDealAlert = null;
+
+  if (show) {
+    newDealAlert = (
+      <Alert
+        variant="danger"
+        className="Game-Alert"
+        onClose={() => setShow(false)}
+        dismissible
+      >
+        <Alert.Heading>We have begun dealing from a new shoe.</Alert.Heading>
+        <p>All counts should be reset.</p>
+      </Alert>
+    );
+  }
+
   if (deckId === "" || dealerHand.length === 0 || userHand.length === 0) {
     return (
       <>
@@ -87,17 +100,13 @@ export default function Game() {
 
   return (
     <>
-      <h1>Game - {cardsRemain} Cards Remaining</h1>
-      <p>This will be where all of the fun will happen.</p>
+      <h1>Dealer</h1>
       <DealerHand />
-      <div className="user-buttons">
-        <span>Running Count: {runningCount}</span>
-      </div>
-      <div className="user-buttons">
-        <span>Player Score: {userScore} </span>
-        <span>Dealer Score: {dealerScore} </span>
-      </div>
+      {newDealAlert}
       <UserHand dealCards={dealCards} />
+      <h1>
+        Player <CountCanvas />
+      </h1>
     </>
   );
 }
