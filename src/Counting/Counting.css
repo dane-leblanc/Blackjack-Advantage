@@ -1,0 +1,13 @@
+.hand-example {
+  width: 80%;
+  left: 10%;
+  margin-top: 4vh;
+  margin-bottom: 5vh;
+}
+
+.about-text p {
+  font-size: 1.5rem;
+  margin-right: 2vw;
+  margin-left: 2vw;
+  text-align: left;
+}

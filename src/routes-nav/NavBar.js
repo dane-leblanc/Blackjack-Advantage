@@ -23,7 +23,7 @@ export default function NavBar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">
-            <LinkContainer to="/about">
+            <LinkContainer to="/counting">
               <Nav.Link>Counting</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/basicStrat">

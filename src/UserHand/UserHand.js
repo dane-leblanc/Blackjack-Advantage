@@ -88,7 +88,12 @@ export default function UserHand({ dealCards }) {
     ? (buttonArea = (
         <h2>
           {result}{" "}
-          <Button variant="primary" onClick={() => dealCards()}>
+          <Button
+            variant="primary"
+            size="lg"
+            classname="UserHand-button"
+            onClick={() => dealCards()}
+          >
             Next Hand
           </Button>
         </h2>
@@ -96,6 +101,8 @@ export default function UserHand({ dealCards }) {
     : (buttonArea = (
         <div className="user-buttons">
           <Button
+            className="user-button"
+            size="lg"
             onClick={() => userHit()}
             disabled={dealerAction ? true : false}
           >
@@ -103,14 +110,17 @@ export default function UserHand({ dealCards }) {
           </Button>
           <Button
             variant="danger"
+            className="user-button"
+            size="lg"
             onClick={() => stand()}
             disabled={dealerAction ? true : false}
           >
             Stand
           </Button>
           <Button
-            variant="secondary
-            "
+            variant="secondary"
+            className="user-button"
+            size="lg"
             onClick={() => double()}
             disabled={
               dealerAction || userHand.length !== 2 || userScore > 11
@@ -122,6 +132,8 @@ export default function UserHand({ dealCards }) {
           </Button>
           {/* <Button
             variant="warning"
+            className="user-button"
+            size="lg"
             disabled={
               dealerAction || userHand[0].value !== userHand[1].value
                 ? true

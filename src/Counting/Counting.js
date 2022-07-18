@@ -1,7 +1,8 @@
 import runningCount1 from "./runningcount1.png";
+import "./Counting.css";
 export default function About() {
   return (
-    <div>
+    <div className="about-text">
       <h1>How to Count Cards</h1>
       <h2>Premise</h2>
       <p>
@@ -21,8 +22,9 @@ export default function About() {
         wins.
       </p>
       <p>
-        The higher concentration of "tens" there are remaining in the shoe, the
-        better basic strategy works.
+        The higher concentration of "tens" there are remaining in the shoe
+        (where the unplayed cards are kept and dealt from), the better basic
+        strategy works.
       </p>
       <p>
         If the player is able to make large bets when the shoe has a high
@@ -41,7 +43,10 @@ export default function About() {
         Let's say the first hand of the shoe runs out as shown below. What would
         the running count be going into the next hand?
       </p>
-      <img src={runningCount1} alt="running count" />
+      <div>
+        <img className="hand-example" src={runningCount1} alt="running count" />
+      </div>
+
       <p>
         We have four low cards (two 4s and two 5s) each worth "+1", two medium
         cards (we can ignore these) worth "0", and three high cards (one Queen
@@ -72,6 +77,20 @@ export default function About() {
         For example, if the <b>running count</b> is 18 and there are
         approximately 3.5 decks remaining in the shoe, the <b>true count</b>{" "}
         5.14 (or 5, after rounding).
+      </p>
+      <h2>Varying Your Bet Size</h2>
+      <p>
+        Once you are able to calculate and maintain the <b>"True Count"</b>, you
+        can capitalize on this information by varying your bet size. If the true
+        count is zero or below, just bet the minimum. If the true count is above
+        zero, bet the minimum plus the <b>true count</b> times the minimum bet
+        size.
+      </p>
+      <p>
+        For example, if you are playing at a table where the minimum bet is $10,
+        you should be betting $10 per hand until the true count reaches +1 or
+        higher. If the true count is 4, you should be betting $50 ($10 + 4 x
+        $10).
       </p>
     </div>
   );

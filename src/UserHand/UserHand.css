@@ -8,5 +8,10 @@
 
 .user-buttons {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+}
+
+.user-button {
+  margin-left: 2vw;
+  margin-right: 2vw;
 }
