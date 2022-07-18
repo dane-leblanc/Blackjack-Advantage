@@ -47,8 +47,9 @@ export default function Game() {
   }, [deckId]);
 
   useEffect(() => {
-    if (cardsRemain < 300 && handComplete) {
+    if (cardsRemain < 50 && handComplete) {
       setShow(true);
+      setRunningCount(0);
       getNewDeck();
     }
   }, [handComplete]);

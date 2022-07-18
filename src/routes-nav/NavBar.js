@@ -17,20 +17,20 @@ export default function NavBar() {
       <Container>
         <LinkContainer to="/">
           <Navbar.Brand>
-            <img src={logo} alt="logo" className="navbar-logo"/>
+            <img src={logo} alt="logo" className="navbar-logo" />
           </Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">
             <LinkContainer to="/about">
-              <Nav.Link>About</Nav.Link>
+              <Nav.Link>Counting</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/basicStrat">
-              <Nav.Link>Strategy</Nav.Link>
+              <Nav.Link>Basic Strategy</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/game">
-              <Nav.Link>Game</Nav.Link>
+              <Nav.Link>Play!</Nav.Link>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
