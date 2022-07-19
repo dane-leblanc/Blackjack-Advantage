@@ -10,4 +10,10 @@
   margin-right: 2vw;
   margin-left: 2vw;
   text-align: left;
+  text-indent: 1em;
+}
+
+h2 {
+  font-style: italic;
+  font-weight: bold;
 }

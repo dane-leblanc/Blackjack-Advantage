@@ -26,7 +26,7 @@ export default function Homepage() {
         className="button"
         variant="primary"
         size="lg"
-        onClick={() => navigate("/about")}
+        onClick={() => navigate("/counting")}
       >
         Learn to Count
       </Button>

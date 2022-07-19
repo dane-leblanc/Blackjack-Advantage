@@ -13,6 +13,7 @@ export default function NavBar() {
       bg="dark"
       className="navbar"
       expand="lg"
+      sticky="top"
     >
       <Container>
         <LinkContainer to="/">
