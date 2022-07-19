@@ -1,6 +1,6 @@
 # Blackjack Advantage
 
-Check out the deployed app [here!] (https://blackjack-advantage.surge.sh/)
+Check out the deployed app [here!](https://blackjack-advantage.surge.sh/)
 
 ---
 
@@ -18,7 +18,7 @@ My plan is to continue adding more features to the app as time goes on, but for 
 
 ### Tools Used
 
-This app makes use of the [Deck of Cards API] (https://www.deckofcardsapi.com/) for card images and organizing the six-deck shoes.
+This app makes use of the [Deck of Cards API](https://www.deckofcardsapi.com/) for card images and organizing the six-deck shoes.
 
 Other Tools
 
